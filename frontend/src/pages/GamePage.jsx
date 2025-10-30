@@ -136,11 +136,18 @@ function GamePage() {
       {/* Navbar */}
       <div className="main-navbar">
         <div className="nav-left">
-          <div className="nav-logo">NotSteam</div>
+          <div className="nav-logo">
+            <span className="logo-icon">⚙</span>
+            <span className="logo-text">NOTSTEAM</span>
+          </div>
           <nav className="main-links">
             <Link to="/">STORE</Link>
-            <a href="#">COMMUNITY</a>
-            {user && <Link to="/profile">PROFILE</Link>}
+            <Link to="/library">LIBRARY</Link>
+            <Link to="/profile">PROFILE</Link>
+            <button onClick={() => {
+              localStorage.removeItem('token');
+              window.location.href = '/login';
+            }} className="logout-link">LOGOUT</button>
           </nav>
         </div>
       </div>
@@ -151,41 +158,40 @@ function GamePage() {
           <Link to="/">All Games</Link> &gt; {game.title}
         </div>
 
-        {/* Hero Section */}
+        {/* Hero Section - Full Width Image */}
         <div className="game-hero-section">
           <div className="game-hero-image">
             <img src={game.image || '/placeholder-game.jpg'} alt={game.title} />
           </div>
-          
-          <div className="game-hero-info">
-            <div className="game-category-badges">
-              <span>ALL GAMES</span>
-              <span>&gt;</span>
-              <span>RPG GAMES</span>
-              <span>&gt;</span>
-              <span>{game.title.toUpperCase()}</span>
-            </div>
+        </div>
 
-            <h1 className="game-page-title">{game.title}</h1>
+        {/* Info Section - Below Image */}
+        <div className="game-hero-info">
+          <h1 className="game-page-title">{game.title}</h1>
 
-            <p className="game-short-desc">{game.short_description || game.description}</p>
+          <p className="game-short-desc">{game.short_description || game.description}</p>
 
+          {/* Meta and Purchase Grid */}
+          <div className="game-meta-section">
             <div className="game-meta-grid">
               <div className="meta-item">
-                <span className="meta-label">ALL REVIEWS:</span>
-                <span className="meta-value">{game.positive_reviews}% POSITIVE</span>
+                <div className="meta-label">All Reviews:</div>
+                <div className="meta-value">0% Positive</div>
               </div>
+
               <div className="meta-item">
-                <span className="meta-label">RELEASE DATE:</span>
-                <span className="meta-value">{game.release_date}</span>
+                <div className="meta-label">Release Date:</div>
+                <div className="meta-value">{game.release_date || '2025-10-28'}</div>
               </div>
+
               <div className="meta-item">
-                <span className="meta-label">DEVELOPER:</span>
-                <span className="meta-value meta-link">{game.developer}</span>
+                <div className="meta-label">Developer:</div>
+                <div className="meta-value meta-link">{game.developer || 'Developer'}</div>
               </div>
+
               <div className="meta-item">
-                <span className="meta-label">PUBLISHER:</span>
-                <span className="meta-value meta-link">{game.publisher}</span>
+                <div className="meta-label">Publisher:</div>
+                <div className="meta-value meta-link">{game.publisher || game.developer || 'Publisher'}</div>
               </div>
             </div>
 
@@ -206,12 +212,12 @@ function GamePage() {
                 {inCart ? 'Checkout' : 'Buy Now'}
               </button>
             </div>
+          </div>
 
-            <div className="game-tags">
-              {game.tags && game.tags.slice(0, 5).map(tag => (
-                <span key={tag.id} className="tag">{tag.name}</span>
-              ))}
-            </div>
+          <div className="game-tags">
+            {game.tags && game.tags.slice(0, 5).map(tag => (
+              <span key={tag.id} className="tag">{tag.name}</span>
+            ))}
           </div>
         </div>
 
@@ -241,13 +247,13 @@ function GamePage() {
             <div className="sidebar-box">
               <h3>Actions</h3>
               <div className="game-actions">
-                <button 
+                <button
                   className="action-btn"
                   onClick={inCart ? handleCheckout : handleAddToCart}
                 >
                   {inCart ? 'Go to Checkout' : 'Add to Cart'}
                 </button>
-                <button 
+                <button
                   className="action-btn"
                   onClick={handleAddToWishlist}
                   disabled={inWishlist}

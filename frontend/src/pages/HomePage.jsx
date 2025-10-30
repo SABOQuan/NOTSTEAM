@@ -149,58 +149,6 @@ function HomePage() {
   <img src="/sswd.png" alt="Banner" />
 </div>
 
-      {/* Featured Games Carousel */}
-      <div className="carousel-section">
-        <h2 className="section-title">Featured Games</h2>
-        <div className="carousel-container">
-          <button 
-            className="carousel-arrow" 
-            onClick={handlePrevious}
-            disabled={currentIndex === 0}
-          >
-            ‹
-          </button>
-          
-          <div className="carousel">
-            {featuredGames.slice(currentIndex, currentIndex + itemsToShow).map((game) => (
-              <div
-                key={game.id}
-                className="game-item"
-                onClick={() => handleGameClick(game.id)}
-              >
-                <LazyImage
-                  src={game.image || '/placeholder-game.jpg'}
-                  alt={game.title}
-                  preset="CAROUSEL"
-                  style={{ width: '100%', height: '400px' }}
-                />
-                <div className="game-info">
-                  <div className="game-title">{game.title}</div>
-                  <div className="price-box">
-                    {game.discount_percentage > 0 && (
-                      <span className="discount">-{game.discount_percentage}%</span>
-                    )}
-                    <div className="prices">
-                      {game.discount_percentage > 0 && (
-                        <span className="price-old">${game.price}</span>
-                      )}
-                      <span className="price-new">${game.discounted_price}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          <button 
-            className="carousel-arrow" 
-            onClick={handleNext}
-            disabled={currentIndex >= featuredGames.length - itemsToShow}
-          >
-            ›
-          </button>
-        </div>
-      </div>
 
       {/* Game Grid */}
       <div className="game-grid-section">
