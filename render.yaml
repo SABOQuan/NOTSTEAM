@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: notsteam-backend
+    runtime: python
+    buildCommand: "cd backend && pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate"
+    startCommand: "cd backend && gunicorn backend.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: False
+      - key: ALLOWED_HOSTS
+        value: .onrender.com
+      - key: DATABASE_URL
+        fromDatabase:
+          name: notsteam-db
+          property: connectionString
+      - key: CLOUDINARY_CLOUD_NAME
+        value: dfnnxpc5n
+      - key: CLOUDINARY_API_KEY
+        value: 157949283977685
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_PUBLISHABLE_KEY
+        sync: false
+
+databases:
+  - name: notsteam-db
+    databaseName: notsteam
+    user: notsteam
