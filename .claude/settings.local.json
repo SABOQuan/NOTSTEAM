@@ -6,7 +6,8 @@
       "Bash(powershell -Command \"(Get-Content HomePage.css) -replace ''body \\{'', ''body {'' | Set-Content HomePage.css.tmp && Get-Content HomePage.css.tmp | Set-Content HomePage.css && Remove-Item HomePage.css.tmp\")",
       "Bash(python:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(npm install:*)"
     ],
     "deny": [],
     "ask": []
