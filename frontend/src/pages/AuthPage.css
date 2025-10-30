@@ -1,0 +1,150 @@
+.auth-page {
+  min-height: 100vh;
+  background: #1b2838;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-navbar {
+  background: #171a21;
+  height: 104px;
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+}
+
+.auth-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.auth-box {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+  padding: 40px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.auth-box h1 {
+  color: #fff;
+  font-size: 28px;
+  margin: 0 0 10px 0;
+  font-weight: 300;
+}
+
+.auth-subtitle {
+  color: #8b929a;
+  font-size: 14px;
+  margin: 0 0 30px 0;
+}
+
+.error-message {
+  background: rgba(194, 51, 51, 0.3);
+  border: 1px solid #c23333;
+  color: #ff6b6b;
+  padding: 12px;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  color: #c6d4df;
+  font-size: 13px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 15px;
+  background: #32353c;
+  border: 1px solid #32353c;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #66c0f4;
+  background: #3d4450;
+}
+
+.field-error {
+  display: block;
+  color: #ff6b6b;
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.auth-submit-btn {
+  width: 100%;
+  background: linear-gradient(to bottom, #75b022 5%, #5b8a1c 100%);
+  border: 1px solid #5b8a1c;
+  color: #fff;
+  padding: 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.2s;
+}
+
+.auth-submit-btn:hover:not(:disabled) {
+  background: linear-gradient(to bottom, #83c526 5%, #699e20 100%);
+}
+
+.auth-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-footer {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.auth-footer p {
+  color: #8b929a;
+  font-size: 13px;
+  margin: 0 0 15px 0;
+}
+
+.auth-footer a {
+  color: #66c0f4;
+  text-decoration: none;
+}
+
+.auth-footer a:hover {
+  color: #fff;
+}
+
+.back-link {
+  display: inline-block;
+  color: #8b929a;
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: #fff;
+}

@@ -1,0 +1,13 @@
+# robots.txt for NotSteam
+
+User-agent: *
+Allow: /
+Disallow: /checkout
+Disallow: /api/
+Disallow: /admin/
+
+# Sitemap location
+Sitemap: https://notsteam.com/sitemap.xml
+
+# Crawl-delay for better server performance
+Crawl-delay: 1
