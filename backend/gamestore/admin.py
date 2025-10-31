@@ -6,10 +6,29 @@ from .models import (
 
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
-    list_display = ['title', 'price', 'discount_percentage', 'discounted_price', 'release_date', 'developer']
-    list_filter = ['release_date', 'developer', 'publisher']
-    search_fields = ['title', 'description', 'developer', 'publisher']
-    list_editable = ['price', 'discount_percentage']
+    list_display = ['title', 'genre', 'price', 'discount_percentage', 'discounted_price', 'positive_reviews', 'release_date', 'developer']
+    list_filter = ['release_date', 'developer', 'publisher', 'genre']
+    search_fields = ['title', 'slug', 'description', 'developer', 'publisher', 'meta_keywords']
+    list_editable = ['price', 'discount_percentage', 'positive_reviews']
+    prepopulated_fields = {'slug': ('title',)}
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('title', 'slug', 'genre', 'short_description', 'description')
+        }),
+        ('Pricing', {
+            'fields': ('price', 'discount_percentage')
+        }),
+        ('Publishing', {
+            'fields': ('developer', 'publisher', 'release_date', 'image')
+        }),
+        ('SEO Settings', {
+            'fields': ('meta_title', 'meta_description', 'meta_keywords'),
+            'classes': ('collapse',)
+        }),
+        ('Reviews', {
+            'fields': ('positive_reviews',)
+        }),
+    )
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):

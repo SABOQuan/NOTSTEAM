@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
+from django.utils.text import slugify
 from PIL import Image
 from io import BytesIO
 import sys
@@ -8,6 +9,7 @@ import sys
 class Game(models.Model):
     """Main Game model for the store"""
     title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=250, unique=True, blank=True)
     description = models.TextField()
     short_description = models.CharField(max_length=500)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -16,6 +18,16 @@ class Game(models.Model):
     release_date = models.DateField()
     developer = models.CharField(max_length=200)
     publisher = models.CharField(max_length=200)
+    genre = models.CharField(max_length=100, blank=True)
+
+    # SEO fields
+    meta_title = models.CharField(max_length=200, blank=True, help_text="SEO title (defaults to title if empty)")
+    meta_description = models.CharField(max_length=160, blank=True, help_text="SEO meta description (defaults to short_description if empty)")
+    meta_keywords = models.CharField(max_length=255, blank=True, help_text="Comma-separated keywords for SEO")
+
+    # Review metrics
+    positive_reviews = models.IntegerField(default=0, help_text="Percentage of positive reviews (0-100)")
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -23,7 +35,23 @@ class Game(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        """Override save to compress image before uploading"""
+        """Override save to compress image and auto-generate SEO fields"""
+        # Auto-generate slug from title if not provided
+        if not self.slug:
+            self.slug = slugify(self.title)
+            # Ensure slug is unique
+            original_slug = self.slug
+            counter = 1
+            while Game.objects.filter(slug=self.slug).exclude(pk=self.pk).exists():
+                self.slug = f"{original_slug}-{counter}"
+                counter += 1
+
+        # Set default SEO fields if not provided
+        if not self.meta_title:
+            self.meta_title = self.title
+        if not self.meta_description:
+            self.meta_description = self.short_description[:160]
+
         if self.image:
             # Open the image
             img = Image.open(self.image)

@@ -30,27 +30,20 @@ class GameSerializer(serializers.ModelSerializer):
     discounted_price = serializers.ReadOnlyField()
     tags = TagSerializer(many=True, read_only=True)
     review_count = serializers.SerializerMethodField()
-    positive_reviews = serializers.SerializerMethodField()
-    
+
     class Meta:
         model = Game
         fields = [
-            'id', 'title', 'description', 'short_description', 
+            'id', 'title', 'slug', 'description', 'short_description',
             'price', 'discount_percentage', 'discounted_price',
-            'image', 'release_date', 'developer', 'publisher',
-            'tags', 'review_count', 'positive_reviews', 
+            'image', 'release_date', 'developer', 'publisher', 'genre',
+            'meta_title', 'meta_description', 'meta_keywords',
+            'positive_reviews', 'tags', 'review_count',
             'created_at', 'updated_at'
         ]
-    
+
     def get_review_count(self, obj):
         return obj.reviews.count()
-    
-    def get_positive_reviews(self, obj):
-        total = obj.reviews.count()
-        if total == 0:
-            return 0
-        positive = obj.reviews.filter(rating='positive').count()
-        return round((positive / total) * 100, 1)
 
 
 class GameLibrarySerializer(serializers.ModelSerializer):
