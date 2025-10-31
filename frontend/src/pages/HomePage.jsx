@@ -149,6 +149,10 @@ function HomePage() {
   <img src="https://res.cloudinary.com/dfnnxpc5n/image/upload/v1761884872/sswd_wuwa3a.png" alt="Banner" />
 </div>
 
+      {/* SEO H1 - Visually hidden but accessible for search engines */}
+      <h1 style={{ position: 'absolute', left: '-10000px', top: 'auto', width: '1px', height: '1px', overflow: 'hidden' }}>
+        NotSteam - Buy PC Games and Digital Downloads
+      </h1>
 
       {/* Game Grid */}
       <div className="game-grid-section">

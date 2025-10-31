@@ -167,10 +167,10 @@ function GamePage() {
       {game && (
         <>
           <SEO
-            title={`${game.title} - Buy & Download | NotSteam`}
-            description={game.description || `Buy ${game.title} for PC. ${game.title} developed by ${game.developer}. Instant digital download.`}
-            keywords={`${game.title}, ${game.developer}, ${game.genre || 'pc game'}, buy ${game.title}, download ${game.title}`}
-            url={`https://notsteam.com/game/${game.id}`}
+            title={game.meta_title || `${game.title} - Buy & Download | NotSteam`}
+            description={game.meta_description || game.description || `Buy ${game.title} for PC. ${game.title} developed by ${game.developer}. Instant digital download.`}
+            keywords={game.seo_keywords || `${game.title}, ${game.developer}, ${game.genres?.map(g => g.name).join(', ') || game.genre || 'pc game'}, buy ${game.title}, download ${game.title}`}
+            url={`https://notsteam.com/game/${game.slug || game.id}`}
             ogImage={game.image}
             type="product"
           />
