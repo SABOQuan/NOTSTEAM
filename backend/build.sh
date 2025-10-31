@@ -17,6 +17,3 @@ if not User.objects.filter(username='admin').exists():
 else:
     print('Superuser already exists')
 EOF
-
-# Add sample games if none exist
-python add_sample_games.py
