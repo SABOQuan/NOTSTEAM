@@ -81,11 +81,21 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = False
 
 # Session settings for cross-origin requests
-# For local development (HTTP), use 'Lax' instead of 'None'
-SESSION_COOKIE_SAMESITE = 'Lax'  # Change to 'None' in production with HTTPS
-SESSION_COOKIE_SECURE = False    # Set to True in production with HTTPS
+# Production settings for HTTPS
+SESSION_COOKIE_SAMESITE = 'None'  # Required for cross-origin with HTTPS
+SESSION_COOKIE_SECURE = True      # Required for HTTPS
 SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_DOMAIN = None     # Allow sessions on localhost
+SESSION_COOKIE_DOMAIN = None
+
+# CSRF settings for production
+CSRF_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = [
+    "https://resonant-gingersnap-7b1e55.netlify.app",
+    "https://unique-croissant-eb4ae9.netlify.app",
+    "https://effortless-maamoul-9b736e.netlify.app",
+    "https://zingy-khapse-17a914.netlify.app",
+]
 
 ROOT_URLCONF = 'backend.urls'
 
