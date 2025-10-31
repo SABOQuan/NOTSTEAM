@@ -51,8 +51,9 @@ function WishlistPage() {
     }
   };
 
-  const handleGameClick = (gameId) => {
-    navigate(`/game/${gameId}`);
+  const handleGameClick = (game) => {
+    const identifier = game.slug || game.id;
+    navigate(`/game/${identifier}`);
   };
 
   if (loading) {
@@ -89,7 +90,7 @@ function WishlistPage() {
             <div className="wishlist-grid">
               {wishlistItems.map((game) => (
                 <div key={game.id} className="wishlist-item">
-                  <div className="wishlist-item-image" onClick={() => handleGameClick(game.id)}>
+                  <div className="wishlist-item-image" onClick={() => handleGameClick(game)}>
                     <img
                       src={game.image || '/placeholder-game.jpg'}
                       alt={game.title}
@@ -100,7 +101,7 @@ function WishlistPage() {
                   </div>
 
                   <div className="wishlist-item-content">
-                    <h3 className="wishlist-item-title" onClick={() => handleGameClick(game.id)}>
+                    <h3 className="wishlist-item-title" onClick={() => handleGameClick(game)}>
                       {game.title}
                     </h3>
                     <p className="wishlist-item-desc">{game.short_description}</p>

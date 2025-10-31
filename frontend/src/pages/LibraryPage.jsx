@@ -37,8 +37,9 @@ function LibraryPage() {
     setViewMode('detail');
   };
 
-  const handlePlayGame = (gameId) => {
-    navigate(`/game/${gameId}`);
+  const handlePlayGame = (game) => {
+    const identifier = game.slug || game.id;
+    navigate(`/game/${identifier}`);
   };
 
   // Group games by month
@@ -162,7 +163,7 @@ function LibraryPage() {
                 />
                 <div className="hero-content">
                   <h1 className="game-title">{selectedGame.game.title}</h1>
-                  <button className="play-btn" onClick={() => handlePlayGame(selectedGame.game.id)}>
+                  <button className="play-btn" onClick={() => handlePlayGame(selectedGame.game)}>
                     <span className="play-icon">▶</span> PLAY
                   </button>
                 </div>

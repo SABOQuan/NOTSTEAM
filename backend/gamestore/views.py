@@ -103,13 +103,15 @@ class GameViewSet(viewsets.ModelViewSet):
     """
     CRUD operations for games
     - List all games
-    - Retrieve single game
+    - Retrieve single game (by ID or slug)
     - Create game (admin only)
     - Update game (admin only)
     - Delete game (admin only)
     """
     queryset = Game.objects.all()
     serializer_class = GameSerializer
+    lookup_field = 'slug'  # Use slug for lookups
+    lookup_value_regex = '[^/]+'  # Allow any character except slash
     
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:

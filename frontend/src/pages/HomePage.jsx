@@ -86,8 +86,10 @@ function HomePage() {
     }
   };
 
-  const handleGameClick = (gameId) => {
-    navigate(`/game/${gameId}`);
+  const handleGameClick = (game) => {
+    // Use slug for SEO-friendly URLs, fallback to ID if no slug
+    const identifier = game.slug || game.id;
+    navigate(`/game/${identifier}`);
   };
 
   return (
@@ -179,7 +181,7 @@ function HomePage() {
             <div
               key={game.id}
               className="grid-item"
-              onClick={() => handleGameClick(game.id)}
+              onClick={() => handleGameClick(game)}
             >
               <div className="grid-image-wrapper">
                 <LazyImage

@@ -104,7 +104,7 @@ function ProfilePage() {
               {recentGames.length > 0 ? (
                 recentGames.map((item, index) => (
                   <div key={item.id}>
-                    <div className="activity-item" onClick={() => navigate(`/game/${item.game.id}`)}>
+                    <div className="activity-item" onClick={() => navigate(`/game/${item.game.slug || item.game.id}`)}>
                       <img 
                         src={item.game.image || '/placeholder-game.jpg'} 
                         alt={item.game.title} 
