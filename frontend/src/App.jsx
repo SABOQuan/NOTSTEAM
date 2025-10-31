@@ -125,7 +125,7 @@ function App() {
         <Router>
           <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/game/:id" element={<GamePage />} />
+          <Route path="/game/:slug" element={<GamePage />} />
           <Route path="/profile" element={
             user ? <ProfilePage /> : <Navigate to="/login" />
           } />

@@ -2,12 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { AuthContext } from '../App';
-import { getGameById, addToWishlist, addToCart, createReview, getGameReviews } from '../services/api';
+import { getGameBySlug, addToWishlist, addToCart, createReview, getGameReviews } from '../services/api';
 import SEO from '../components/SEO';
 import './GamePage.css';
 
 function GamePage() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
   const { user, cart, setCart } = useContext(AuthContext);
   const [game, setGame] = useState(null);
@@ -22,7 +22,7 @@ function GamePage() {
 
   useEffect(() => {
     loadGame();
-  }, [id]);
+  }, [slug]);
 
   useEffect(() => {
     if (game && cart) {
@@ -32,7 +32,7 @@ function GamePage() {
 
   const loadGame = async () => {
     try {
-      const data = await getGameById(id);
+      const data = await getGameBySlug(slug);
       setGame(data);
       loadReviews();
     } catch (error) {
@@ -44,7 +44,7 @@ function GamePage() {
 
   const loadReviews = async () => {
     try {
-      const data = await getGameReviews(id);
+      const data = await getGameReviews(slug);
       setReviews(data);
     } catch (error) {
       console.error('Error loading reviews:', error);
@@ -67,7 +67,7 @@ function GamePage() {
     setSubmittingReview(true);
     try {
       await createReview({
-        game: id,
+        game: game.slug,
         rating: reviewRating,
         review_text: reviewText,
         hours_played: parseFloat(hoursPlayed) || 0
@@ -92,7 +92,7 @@ function GamePage() {
     }
 
     try {
-      await addToCart(game.id);
+      await addToCart(game.slug);
       setCart([...cart, game]);
       setInCart(true);
       alert('Added to cart!');
@@ -109,7 +109,7 @@ function GamePage() {
     }
 
     try {
-      await addToWishlist(game.id);
+      await addToWishlist(game.slug);
       setInWishlist(true);
       alert('Added to wishlist!');
     } catch (error) {
@@ -152,7 +152,7 @@ function GamePage() {
         "price": game.discounted_price,
         "priceCurrency": "USD",
         "availability": "https://schema.org/InStock",
-        "url": `https://notsteam.com/game/${game.id}`
+        "url": `https://notsteam.com/game/${game.slug}`
       },
       "aggregateRating": {
         "@type": "AggregateRating",
