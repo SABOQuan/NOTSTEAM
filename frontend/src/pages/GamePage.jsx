@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { AuthContext } from '../App';
-import { getGameBySlug, addToWishlist, addToCart, createReview, getGameReviews } from '../services/api';
+import { getGameById, addToWishlist, addToCart, createReview, getGameReviews } from '../services/api';
 import SEO from '../components/SEO';
 import './GamePage.css';
 
@@ -32,7 +32,7 @@ function GamePage() {
 
   const loadGame = async () => {
     try {
-      const data = await getGameBySlug(slug);
+      const data = await getGameById(slug);
       setGame(data);
       loadReviews();
     } catch (error) {
