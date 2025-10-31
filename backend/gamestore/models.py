@@ -6,6 +6,33 @@ from PIL import Image
 from io import BytesIO
 import sys
 
+
+class Genre(models.Model):
+    """Game genre/category"""
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True, blank=True)
+    description = models.TextField(blank=True)
+
+    # SEO fields for genre pages
+    meta_title = models.CharField(max_length=200, blank=True)
+    meta_description = models.CharField(max_length=160, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        if not self.meta_title:
+            self.meta_title = f"{self.name} Games - Best {self.name} PC Games"
+        if not self.meta_description:
+            self.meta_description = f"Browse the best {self.name} games. Find top-rated {self.name} PC games with reviews and discounts."
+        super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ['name']
+
+
 class Game(models.Model):
     """Main Game model for the store"""
     title = models.CharField(max_length=200)
@@ -18,7 +45,8 @@ class Game(models.Model):
     release_date = models.DateField()
     developer = models.CharField(max_length=200)
     publisher = models.CharField(max_length=200)
-    genre = models.CharField(max_length=100, blank=True)
+    genre = models.CharField(max_length=100, blank=True)  # Keep for migration
+    genres = models.ManyToManyField(Genre, related_name='games', blank=True)
 
     # SEO fields
     meta_title = models.CharField(max_length=200, blank=True, help_text="SEO title (defaults to title if empty)")
