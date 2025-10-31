@@ -76,6 +76,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://effortless-maamoul-9b736e.netlify.app",
     "https://zingy-khapse-17a914.netlify.app",
     "https://iridescent-granita-ff0c14.netlify.app",
+    "https://courageous-madeleine-6ec70e.netlify.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -97,6 +98,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://effortless-maamoul-9b736e.netlify.app",
     "https://zingy-khapse-17a914.netlify.app",
     "https://iridescent-granita-ff0c14.netlify.app",
+    "https://courageous-madeleine-6ec70e.netlify.app",
 ]
 
 ROOT_URLCONF = 'backend.urls'
