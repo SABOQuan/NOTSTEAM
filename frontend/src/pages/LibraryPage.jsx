@@ -21,14 +21,19 @@ function LibraryPage() {
   }, [user, navigate]);
 
   const loadLibrary = async () => {
+    setLoading(true);
     try {
       const data = await getLibrary();
+      console.log('Library data:', data); // Debug log
       setLibrary(data);
       if (data.length > 0) {
         setSelectedGame(data[0]);
       }
     } catch (error) {
       console.error('Error loading library:', error);
+      alert('Error loading library: ' + error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,6 +62,10 @@ function LibraryPage() {
   };
 
   const groupedGames = groupGamesByMonth();
+
+  if (loading) {
+    return <div className="loading" style={{textAlign: 'center', padding: '50px', color: '#fff'}}>Loading library...</div>;
+  }
 
   return (
     <div className="library-page">
@@ -117,6 +126,13 @@ function LibraryPage() {
                     <option>Recent</option>
                     <option>Installed</option>
                   </select>
+                  <button
+                    onClick={loadLibrary}
+                    className="refresh-btn"
+                    style={{marginLeft: '15px', padding: '8px 16px', background: '#5eb3a6', border: 'none', borderRadius: '4px', color: '#0d1f2d', fontWeight: 'bold', cursor: 'pointer'}}
+                  >
+                    ↻ Refresh
+                  </button>
                 </div>
               </div>
 
