@@ -68,9 +68,13 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "http://localhost:5173", 
-    "http://127.0.0.1:5173", 
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
     "http://127.0.0.1:8000",
+    "https://resonant-gingersnap-7b1e55.netlify.app",
+    "https://unique-croissant-eb4ae9.netlify.app",
+    "https://effortless-maamoul-9b736e.netlify.app",
+    "https://zingy-khapse-17a914.netlify.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
