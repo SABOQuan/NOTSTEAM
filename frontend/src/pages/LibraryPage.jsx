@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../App';
+import { getLibrary } from '../services/api';
 import './LibraryPage.css';
 
 function LibraryPage() {
@@ -21,19 +22,10 @@ function LibraryPage() {
 
   const loadLibrary = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8000/api/library/', {
-        headers: {
-          'Authorization': `Token ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setLibrary(data);
-        if (data.length > 0) {
-          setSelectedGame(data[0]);
-        }
+      const data = await getLibrary();
+      setLibrary(data);
+      if (data.length > 0) {
+        setSelectedGame(data[0]);
       }
     } catch (error) {
       console.error('Error loading library:', error);
