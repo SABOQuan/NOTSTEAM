@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { AuthContext } from '../App';
-import { getGameById, addToWishlist, addToCart } from '../services/api';
+import { getGameById, addToWishlist, addToCart, createReview, getGameReviews } from '../services/api';
 import SEO from '../components/SEO';
 import './GamePage.css';
 
@@ -14,6 +14,11 @@ function GamePage() {
   const [loading, setLoading] = useState(true);
   const [inWishlist, setInWishlist] = useState(false);
   const [inCart, setInCart] = useState(false);
+  const [reviews, setReviews] = useState([]);
+  const [reviewText, setReviewText] = useState('');
+  const [reviewRating, setReviewRating] = useState('positive');
+  const [hoursPlayed, setHoursPlayed] = useState('');
+  const [submittingReview, setSubmittingReview] = useState(false);
 
   useEffect(() => {
     loadGame();
@@ -29,10 +34,54 @@ function GamePage() {
     try {
       const data = await getGameById(id);
       setGame(data);
+      loadReviews();
     } catch (error) {
       console.error('Error loading game:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadReviews = async () => {
+    try {
+      const data = await getGameReviews(id);
+      setReviews(data);
+    } catch (error) {
+      console.error('Error loading reviews:', error);
+    }
+  };
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    if (!reviewText.trim()) {
+      alert('Please write a review');
+      return;
+    }
+
+    setSubmittingReview(true);
+    try {
+      await createReview({
+        game: id,
+        rating: reviewRating,
+        review_text: reviewText,
+        hours_played: parseFloat(hoursPlayed) || 0
+      });
+
+      setReviewText('');
+      setHoursPlayed('');
+      loadReviews();
+      alert('Review submitted successfully!');
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      alert('Failed to submit review. You may have already reviewed this game.');
+    } finally {
+      setSubmittingReview(false);
     }
   };
 
@@ -193,6 +242,15 @@ function GamePage() {
                 <div className="meta-label">Publisher:</div>
                 <div className="meta-value meta-link">{game.publisher || game.developer || 'Publisher'}</div>
               </div>
+
+              <div className="meta-item">
+                <div className="meta-label">Genre:</div>
+                <div className="meta-value">
+                  {game.genres && game.genres.length > 0
+                    ? game.genres.map(g => g.name).join(', ')
+                    : game.genre || 'N/A'}
+                </div>
+              </div>
             </div>
 
             <div className="game-purchase-section">
@@ -226,6 +284,95 @@ function GamePage() {
           <div className="game-description-box">
             <h2>About This Game</h2>
             <p>{game.description}</p>
+
+            {/* Review Section */}
+            <div className="review-section">
+              <h3>Leave a Review</h3>
+              {user ? (
+                <form onSubmit={handleSubmitReview} className="review-form">
+                  <div className="review-rating">
+                    <label>
+                      <input
+                        type="radio"
+                        name="rating"
+                        value="positive"
+                        checked={reviewRating === 'positive'}
+                        onChange={(e) => setReviewRating(e.target.value)}
+                      />
+                      👍 Recommend
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        name="rating"
+                        value="negative"
+                        checked={reviewRating === 'negative'}
+                        onChange={(e) => setReviewRating(e.target.value)}
+                      />
+                      👎 Not Recommend
+                    </label>
+                  </div>
+
+                  <div className="review-hours">
+                    <label>
+                      Hours Played:
+                      <input
+                        type="number"
+                        step="0.1"
+                        min="0"
+                        value={hoursPlayed}
+                        onChange={(e) => setHoursPlayed(e.target.value)}
+                        placeholder="0.0"
+                        className="hours-input"
+                      />
+                    </label>
+                  </div>
+
+                  <textarea
+                    value={reviewText}
+                    onChange={(e) => setReviewText(e.target.value)}
+                    placeholder="Write your review here..."
+                    className="review-textarea"
+                    rows="5"
+                    required
+                  />
+
+                  <button
+                    type="submit"
+                    className="submit-review-btn"
+                    disabled={submittingReview}
+                  >
+                    {submittingReview ? 'Submitting...' : 'Submit Review'}
+                  </button>
+                </form>
+              ) : (
+                <p className="review-login-prompt">
+                  <Link to="/login">Login</Link> to leave a review
+                </p>
+              )}
+
+              {/* Display Reviews */}
+              {reviews.length > 0 && (
+                <div className="reviews-list">
+                  <h3>User Reviews ({reviews.length})</h3>
+                  {reviews.map((review) => (
+                    <div key={review.id} className="review-item">
+                      <div className="review-header">
+                        <span className="review-user">{review.user.username}</span>
+                        <span className={`review-rating ${review.rating}`}>
+                          {review.rating === 'positive' ? '👍 Recommended' : '👎 Not Recommended'}
+                        </span>
+                      </div>
+                      <p className="review-text">{review.review_text}</p>
+                      <div className="review-meta">
+                        <span>{review.hours_played} hrs on record</span>
+                        <span>{new Date(review.created_at).toLocaleDateString()}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="game-sidebar">
