@@ -286,7 +286,7 @@ function GamePage() {
             <p>{game.description}</p>
 
             {/* Review Section */}
-            <div className="review-section">
+            <div className="review-section" data-test="review-section">
               <h3>Leave a Review</h3>
               {user ? (
                 <form onSubmit={handleSubmitReview} className="review-form">
