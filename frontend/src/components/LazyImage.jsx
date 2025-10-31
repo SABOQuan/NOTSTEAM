@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getOptimizedImage } from '../utils/imageOptimizer';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL?.replace('/api/', '') || 'http://localhost:8000';
+
 /**
  * Lazy Loading Image Component with Cloudinary optimization
  * Only loads images when they're about to enter the viewport
@@ -19,7 +21,7 @@ function LazyImage({ src, alt, preset = 'CARD', className, onClick, style }) {
         setImageSrc(getOptimizedImage(src, preset));
       } else if (src.startsWith('/media/')) {
         // Local Django media files
-        setImageSrc(`http://localhost:8000${src}`);
+        setImageSrc(`${API_BASE_URL}${src}`);
       } else {
         // Use as-is
         setImageSrc(src);
