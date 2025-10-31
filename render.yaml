@@ -2,7 +2,7 @@ services:
   - type: web
     name: notsteam-backend
     runtime: python
-    buildCommand: "cd backend && pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate"
+    buildCommand: "cd backend && chmod +x build.sh && ./build.sh"
     startCommand: "cd backend && gunicorn backend.wsgi:application"
     envVars:
       - key: SECRET_KEY
