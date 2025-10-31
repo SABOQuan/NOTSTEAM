@@ -146,7 +146,7 @@ function HomePage() {
 
      {/* Banner */}
 <div className="banner">
-  <img src="/sswd.png" alt="Banner" />
+  <img src="https://res.cloudinary.com/dfnnxpc5n/image/upload/v1761884872/sswd_wuwa3a.png" alt="Banner" />
 </div>
 
 
