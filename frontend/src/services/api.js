@@ -16,9 +16,9 @@ export const getFeaturedGames = async () => {
   return response.data;
 };
 
-export const getGameBySlug = async (slug) => {
-  const res = await fetch(`${API_BASE_URL}/api/games/${slug}/`);
-  return res.json();
+export const getGameById = async (slugOrId) => {
+  const response = await axios.get(`${API_URL}games/${slugOrId}/`);
+  return response.data;
 };
 
 export const searchGames = async (query) => {

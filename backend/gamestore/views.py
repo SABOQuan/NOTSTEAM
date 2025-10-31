@@ -110,8 +110,20 @@ class GameViewSet(viewsets.ModelViewSet):
     """
     queryset = Game.objects.all()
     serializer_class = GameSerializer
-    lookup_field = 'slug'  # Use slug for lookups
-    lookup_value_regex = '[^/]+'  # Allow any character except slash
+
+    def get_object(self):
+        """Allow lookup by either ID or slug"""
+        lookup_value = self.kwargs.get('pk')
+
+        # Try to get by slug first
+        try:
+            return Game.objects.get(slug=lookup_value)
+        except (Game.DoesNotExist, ValueError):
+            # If not found by slug, try by ID
+            try:
+                return Game.objects.get(id=int(lookup_value))
+            except (Game.DoesNotExist, ValueError):
+                raise Game.DoesNotExist
     
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
